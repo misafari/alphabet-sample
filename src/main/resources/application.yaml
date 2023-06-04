@@ -1,0 +1,20 @@
+spring:
+  main:
+    banner-mode: off
+  datasource:
+    url: jdbc:mysql://localhost/alphabet
+    username: root
+    password: admin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  test:
+    database:
+      replace: none
+jwt:
+  secret-key: 'zdtlD3JK56m6wTTgsNFhqzjqP'
+  expired-time: 604800000 #one week
+  issuer: 'alphabet'
+
