@@ -1,7 +1,6 @@
 package com.alefba.sample.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,11 +22,9 @@ import java.util.stream.Collectors;
 public class User implements UserDetails {
     @Id
     @Column(name = "username", unique = true, nullable = false, updatable = false)
-    @NotBlank(message = "username is required")
     private String username;
 
     @Column(name = "password", nullable = false)
-    @NotBlank(message = "password is required")
     private String password;
 
     @Column(name = "deleted_at")

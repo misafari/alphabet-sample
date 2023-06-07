@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -25,19 +24,19 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final var header = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (header == null || !header.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
         }
 
-        final String token = header.split(" ")[1].trim();
+        final var token = header.split(" ")[1].trim();
         jwtTokenUtil.validate(token);
 
 
-        UserDetails userDetails = userDetailsService.loadUserByUsername(jwtTokenUtil.getUsername(token));
+        var userDetails = userDetailsService.loadUserByUsername(jwtTokenUtil.getUsername(token));
 
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+        var authentication = new UsernamePasswordAuthenticationToken(
                 userDetails, null,
                 userDetails == null ? List.of() : userDetails.getAuthorities()
         );

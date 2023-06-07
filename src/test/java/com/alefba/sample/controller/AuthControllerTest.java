@@ -17,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -116,7 +115,7 @@ class AuthControllerTest {
                     .willThrow(RecordNotFoundException.class);
 
             mockMvc.perform(
-                            post("/auth/sign-in")
+                            post("%s%s".formatted(UserController.ROOT_PATH, "/sign-in"))
                                     .contentType(MediaType.APPLICATION_JSON)
                                     .content("""
                                             {

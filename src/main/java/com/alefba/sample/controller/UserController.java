@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
@@ -22,6 +21,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserController {
     public static final String ROOT_PATH = "/api/v1/auth";
+
     private final UserService service;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
@@ -34,12 +34,12 @@ public class UserController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<SignInResponse> login(@RequestBody @Valid SignInRequest request) {
-        Authentication authenticate = authenticationManager
+        final var authenticate = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(request.username(), request.password()));
 
-        var user = (User) authenticate.getPrincipal();
+        final var user = (User) authenticate.getPrincipal();
 
-        var response = new SignInResponse(
+        final var response = new SignInResponse(
                 jwtTokenUtil.generateAccessToken(user.getUsername()),
                 user.getUsername(),
                 user.getRoles().stream().map(e -> e.getName().name()).collect(Collectors.toList())

@@ -33,13 +33,9 @@ public class JwtTokenUtil {
 
 
     public String getUsername(String token) {
-        Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody();
+        final var claims = getTokenBody(token);
         return claims.getSubject();
     }
-
 
     public void validate(String token) {
         try {
@@ -53,5 +49,12 @@ public class JwtTokenUtil {
         } catch (IllegalArgumentException ex) {
 //            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "JWT claims string is empty.");
         }
+    }
+
+    private Claims getTokenBody(String token) {
+        return Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
